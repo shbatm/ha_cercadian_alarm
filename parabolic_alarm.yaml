@@ -1,7 +1,6 @@
 blueprint:
   name: Parabolic Alarm Automation
-  version: 1.1.0
-  description: Turn a light on based on a start time, whether it is a workday and whether a person is home. This is to match the sunrise and allow for a natural wake up.
+  description: Turn a light on based on a start time, whether it is a workday and whether a person is home. This is to match the sunrise and allow for a natural wake up. Version 1.1.0
   domain: automation
   input:
     alarm_start_time:
