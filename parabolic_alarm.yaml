@@ -239,6 +239,7 @@ action:
           steps_per_minute: !input steps_per_minute
           light_timeout: !input light_timeout
           target_light: !input target_light
+          keep_light_on: !input keep_light_on # Add this line to pass the variable
   - choose:
       - conditions: []
         sequence: !input post_action
