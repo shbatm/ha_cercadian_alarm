@@ -129,7 +129,7 @@ sequence:
           - condition: template
             value_template: "{{ is_state(target_light, 'on') }}"
           - condition: template
-            value_template: "{{ not is_input('keep_light_on') }}"
+            value_template: "{{ not keep_light_on }}"
     then:
       - delay:
           minutes: "{{ light_timeout | int }}"
