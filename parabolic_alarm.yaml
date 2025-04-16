@@ -24,6 +24,10 @@ blueprint:
       selector:
         text:
     additional_conditions:
+      name: 📝 Conditions
+      description: 
+        Conditions to check if the automation should run. Defaults to checking if a person is home and a Binary Sensor state to determine whether it should run (typically
+        from Workday Integration, more information here - https://www.home-assistant.io/integrations/workday/).
       default: 
         - condition: state
           entity_id: "binary_sensor.workday"
