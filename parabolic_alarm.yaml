@@ -23,26 +23,16 @@ blueprint:
       default: "-00:05:00"
       selector:
         text:
-    workday_sensor:
-      name: 📆 Workday Sensor
-      description:
-        Binary Sensor that is used to determine whether it should run. Typically
-        from Workday Integration. More information here - https://www.home-assistant.io/integrations/workday/
+    additional_conditions:
+      default: 
+        - condition: state
+          entity_id: "binary_sensor.workday"
+          state: "on"
+        - condition: state
+          entity_id: "person.owner"
+          state: "home"
       selector:
-        entity:
-          filter:
-            - domain:
-                - binary_sensor
-          multiple: false
-    person_sensor:
-      name: 👤 Person Sensor
-      description: Select the person sensor so that the alarm will only run when you are home.
-      selector:
-        entity:
-          filter:
-            - domain:
-                - person
-          multiple: true
+        condition:
     alarm_script:
       name: 📄 Script to trigger
       description: Light Alarm Script
@@ -171,20 +161,29 @@ blueprint:
           step: 1.0
           mode: slider
       default: 5
+    pre_action:
+      name: 🎮 Pre Script Action
+      description: An action you want to perform before the lights turn on.
+      default: []
+      selector:
+        action: {}
+    post_action:
+      name: 🎮 Post Script Action
+      description: An action you want to run after the script has finished
+      default: []
+      selector:
+        action: {}
   source_url: https://github.com/steku/ha_cercadian_alarm/blob/main/parabolic_alarm.yaml
 trigger:
   - trigger: time
     at:
       entity_id: !input alarm_start_time
       offset: !input offset_from_start_time
-condition:
-  - condition: state
-    entity_id: !input workday_sensor
-    state: "on"
-  - condition: state
-    entity_id: !input person_sensor
-    state: "home"
+condition: !input additional_conditions
 action:
+  - choose:
+      - conditions: []
+        sequence: !input pre_action
   - action: light.turn_on
     data:
       color_temp_kelvin: !input start_kelvin_temp
@@ -229,4 +228,7 @@ action:
           steps_per_minute: !input steps_per_minute
           light_timeout: !input light_timeout
           target_light: !input target_light
+  - choose:
+    - conditions: []
+      sequence: !input post_action
 mode: single
